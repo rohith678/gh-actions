@@ -1,5 +1,10 @@
 name: my-pipeline
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
 jobs:
   test-job:
     runs-on: ubuntu-latest
@@ -20,3 +25,18 @@ jobs:
         run: npm install
       - name: build
         run: npm run build
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-files
+          path: build
+  deploy-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-files
+      - name: list build-files
+        run: ls
