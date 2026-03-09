@@ -1,0 +1,13 @@
+name: my-pipeline
+on:
+  workflow_dispatch:
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: get code
+        uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm install
+      - name: run tests
+        run: npm test
